@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ferdium
+      POSTGRES_PASSWORD: ferdium
+      POSTGRES_DB: ferdium
+
+  redis:
+    image: redis:6
+
+  ferdium-server:
+    image: ferdium/ferdium-server
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://ferdium:ferdium@postgres:5432/ferdium
+      REDIS_URL: redis://redis:6379
+      APP_URL: http://localhost:3000
+      IS_CREATION_ENABLED: "true"
+    depends_on:
+      - postgres
+      - redis
